@@ -1,6 +1,8 @@
 <script setup>
 import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
+import BreezeTableComponent from '@/Components/TablaPersonajes.vue';
 import { Head } from '@inertiajs/inertia-vue3';
+
 </script>
 
 <template>
@@ -22,5 +24,7 @@ import { Head } from '@inertiajs/inertia-vue3';
                 </div>
             </div>
         </div>
+        <BreezeTableComponent>
+        </BreezeTableComponent>
     </BreezeAuthenticatedLayout>
 </template>

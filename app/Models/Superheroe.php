@@ -15,7 +15,6 @@ class Superheroe extends Model
         'raza',
         'poder',
         'editorial',
-        'raza',
         'genero',
     ];
 }

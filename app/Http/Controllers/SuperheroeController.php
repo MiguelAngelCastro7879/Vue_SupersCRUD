@@ -14,7 +14,7 @@ class SuperheroeController extends Controller
      */
     public function index()
     {
-        //
+        return Superheroe::get();
     }
 
     /**
@@ -25,7 +25,8 @@ class SuperheroeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $superheroe = new Superheroe;
+        $superheroe->create($request->all());
     }
 
     /**
@@ -36,7 +37,7 @@ class SuperheroeController extends Controller
      */
     public function show(Superheroe $superheroe)
     {
-        //
+        return $superheroe;
     }
 
     /**
@@ -48,7 +49,7 @@ class SuperheroeController extends Controller
      */
     public function update(Request $request, Superheroe $superheroe)
     {
-        //
+        $superheroe->update($request->all());
     }
 
     /**
@@ -59,6 +60,6 @@ class SuperheroeController extends Controller
      */
     public function destroy(Superheroe $superheroe)
     {
-        //
+        $superheroe->delete();
     }
 }

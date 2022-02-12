@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\SuperheroeResource;
 use App\Models\Superheroe;
 use Illuminate\Http\Request;
 
@@ -35,8 +36,9 @@ class SuperheroeController extends Controller
      * @param  \App\Models\Superheroe  $superheroe
      * @return \Illuminate\Http\Response
      */
-    public function show(Superheroe $superheroe)
+    public function show($superheroe)
     {
+        $superheroe = Superheroe::find($superheroe);
         return $superheroe;
     }
 
@@ -47,8 +49,9 @@ class SuperheroeController extends Controller
      * @param  \App\Models\Superheroe  $superheroe
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Superheroe $superheroe)
+    public function update(Request $request, $superheroe)
     {
+        $superheroe = Superheroe::find($superheroe);
         $superheroe->update($request->all());
     }
 
@@ -58,8 +61,11 @@ class SuperheroeController extends Controller
      * @param  \App\Models\Superheroe  $superheroe
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Superheroe $superheroe)
+    public function destroy($superheroe)
     {
+
+        $superheroe = Superheroe::find($superheroe);
         $superheroe->delete();
+        // return SuperheroeResource::collection($superheroe);
     }
 }

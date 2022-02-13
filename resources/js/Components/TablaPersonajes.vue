@@ -6,8 +6,8 @@
             return {
                 a: 1,
                 personajes: [],
-                open: false,
 	            show: true,
+                btn: "Editar",
 	            btnText: "Ocultar",
                 personaje: {
                     id:'',
@@ -19,6 +19,18 @@
                     editorial:'',
                     genero:'',
                 },
+                personajeE: {
+                    id:'',
+                    personaje:'',
+                    nombre:'',
+                    estado:'',
+                    raza:'',
+                    poder:'',
+                    editorial:'',
+                    genero:'',
+                },
+                e: '',
+
             }
         },
         methods:{
@@ -26,25 +38,29 @@
                this.a = this.a+1
             },
             async listarPersonajes(){
-                const $res = await axios.get('/personajes')
+                const $res = await axios.get('/api/personajes')
                 this.personajes = $res.data;
             },
             async eliminar(id){
-                const $res = await axios.delete('/personajes/'+id)
+                const $res = await axios.delete('/api/personajes/'+id)
                 this.listarPersonajes()
             },
-            async actualizar(event){
+            async actualizar(id){
+                const $pos = await axios.put('/api/personajes/'+id,this.personajeE)
+                this.listarPersonajes()
+                this.e=''
+            },
+            async mostrarUno(id){
+                const $res = await axios.get('/api/personajes/'+id)
+                this.personaje=$res.data
+                this.personajeE=this.personaje
             },
             async crear(event){
-                const $res = await axios.post('/personajes',this.personaje)
+                const $res = await axios.post('/api/personajes',this.personaje)
                 this.resetDatos()
                 this.showToggle()
                 this.listarPersonajes()
             },
-
-            async mostrarInsertar(){
-            },
-
             resetDatos(){
                 this.personaje.personaje='',
                 this.personaje.nombre='',
@@ -62,6 +78,16 @@
                 }else{
                     this.btnText = "Cancelar"
                 }
+            },
+            editar:function(id){
+                this.mostrarUno(id)
+                this.e = id
+                this.edit = !this.edit
+                if(this.edit){
+                    this.btn = "Editar"
+
+                }else{
+                }
             }
         },
         created() {
@@ -71,6 +97,7 @@
             console.log(this.$data) // { a: 1 }
             console.log(this.personajes)
             this.showToggle()
+            this.editar(null)
         },
 
     }
@@ -79,9 +106,7 @@
 <template>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-
-    <button v-text="btnText" @click="showToggle" class="btn btn-success"></button>
-    <div v-show="isShow"> El bloque de contenido que se mostrará y ocultará </div>
+    <button v-text="btnText" @click="showToggle" class="mb-2 btn btn-success"></button>
 
     <table class="table table-striped">
         <thead>
@@ -99,31 +124,41 @@
         </thead>
         <tbody>
           <tr v-show="!isShow">
-            <th scope="col"><button @click="this.crear()" class="btn btn-success">Enviar</button></th>
+            <th scope="col"><div class="d-grid gap-2"><button @click="this.crear()" class="btn btn-success btn-sm">Enviar</button></div></th>
             <th scope="col"></th>
-            <td scope="col"><input v-model="personaje.personaje" type="text" id="ipersonaje" class="form-control-sm" size="15" placeholder="personaje" ></td>
-            <td scope="col"><input v-model="personaje.nombre" type="text" id="inombre" class="form-control-sm" size="15" placeholder="nombre"></td>
-            <td scope="col"><input v-model="personaje.estado" type="text" id="iestado" class="form-control-sm" size="7" placeholder="estado" ></td>
-            <td scope="col"><input v-model="personaje.raza" type="text" id="iraza" class="form-control-sm" size="7" placeholder="raza" ></td>
-            <td scope="col"><input v-model="personaje.poder" type="text" id="ipoder" class="form-control-sm" size="15" placeholder="poder" ></td>
-            <td scope="col"><input v-model="personaje.editorial" type="text" id="ieditorial" class="form-control-sm" size="15" placeholder="editorial" ></td>
-            <td scope="col"><input v-model="personaje.genero" type="text" id="igenero" class="form-control-sm" size="7" placeholder="genero" ></td>
+            <td scope="col"><input v-model="personaje.personaje" type="text" id="ipersonaje" class="form-control-sm form-control" size="7" placeholder="personaje" ></td>
+            <td scope="col"><input v-model="personaje.nombre" type="text" id="inombre" class="form-control-sm form-control" size="7" placeholder="nombre"></td>
+            <td scope="col"><input v-model="personaje.estado" type="text" id="iestado" class="form-control-sm form-control" size="7" placeholder="estado" ></td>
+            <td scope="col"><input v-model="personaje.raza" type="text" id="iraza" class="form-control-sm form-control" size="7" placeholder="raza" ></td>
+            <td scope="col"><input v-model="personaje.poder" type="text" id="ipoder" class="form-control-sm form-control" size="7" placeholder="poder" ></td>
+            <td scope="col"><input v-model="personaje.editorial" type="text" id="ieditorial" class="form-control-sm form-control" size="7" placeholder="editorial" ></td>
+            <td scope="col"><input v-model="personaje.genero" type="text" id="igenero" class="form-control-sm form-control" size="7" placeholder="genero" ></td>
           </tr>
           <tr v-for="personaje in personajes" :key="personaje.id">
             <td scope="col">
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <button @click="boton" class="btn btn-warning btn-sm">Editar</button>
-                    <button @click="this.eliminar(personaje.id)" class="btn btn-danger btn-sm">Eliminar</button>
+                    <button v-if="e!=personaje.id" v-text="btn" @click="editar(personaje.id)" class="btn btn-warning btn-sm"></button>
+                    <button v-if="e==personaje.id" @click="actualizar(personaje.id)" class="btn btn-success btn-sm">Enviar</button>
+
+                    <button  @click="this.eliminar(personaje.id)" class="btn btn-danger btn-sm">Eliminar</button>
                 </div>
             </td>
-            <td scope="col">{{personaje.id}}</td>
-            <td scope="col">{{personaje.personaje}}</td>
-            <td scope="col">{{personaje.nombre}}</td>
-            <td scope="col">{{personaje.estado}}</td>
-            <td scope="col">{{personaje.raza}}</td>
-            <td scope="col">{{personaje.poder}}</td>
-            <td scope="col">{{personaje.editorial}}</td>
-            <td scope="col">{{personaje.genero}}</td>
+            <td v-if="e!=personaje.id" scope="col">{{personaje.id}}</td>
+            <td v-if="e!=personaje.id" scope="col">{{personaje.personaje}}</td>
+            <td v-if="e!=personaje.id" scope="col">{{personaje.nombre}}</td>
+            <td v-if="e!=personaje.id" scope="col">{{personaje.estado}}</td>
+            <td v-if="e!=personaje.id" scope="col">{{personaje.raza}}</td>
+            <td v-if="e!=personaje.id" scope="col">{{personaje.poder}}</td>
+            <td v-if="e!=personaje.id" scope="col">{{personaje.editorial}}</td>
+            <td v-if="e!=personaje.id" scope="col">{{personaje.genero}}</td>
+            <th scope="col"></th>
+            <td v-if="e==personaje.id" scope="col"><input v-model="personajeE.personaje" type="text" id="ipersonaje" class="form-control-sm form-control" size="7" placeholder="personaje" ></td>
+            <td v-if="e==personaje.id" scope="col"><input v-model="personajeE.nombre" type="text" id="inombre" class="form-control-sm form-control" size="7" placeholder="nombre"></td>
+            <td v-if="e==personaje.id" scope="col"><input v-model="personajeE.estado" type="text" id="iestado" class="form-control-sm form-control" size="7" placeholder="estado" ></td>
+            <td v-if="e==personaje.id" scope="col"><input v-model="personajeE.raza" type="text" id="iraza" class="form-control-sm form-control" size="7" placeholder="raza" ></td>
+            <td v-if="e==personaje.id" scope="col"><input v-model="personajeE.poder" type="text" id="ipoder" class="form-control-sm form-control" size="7" placeholder="poder" ></td>
+            <td v-if="e==personaje.id" scope="col"><input v-model="personajeE.editorial" type="text" id="ieditorial" class="form-control-sm form-control" size="7" placeholder="editorial" ></td>
+            <td v-if="e==personaje.id" scope="col"><input v-model="personajeE.genero" type="text" id="igenero" class="form-control-sm form-control" size="7" placeholder="genero" ></td>
           </tr>
         </tbody>
     </table>

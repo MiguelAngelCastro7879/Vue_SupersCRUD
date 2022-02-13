@@ -52,7 +52,14 @@ class SuperheroeController extends Controller
     public function update(Request $request, $superheroe)
     {
         $superheroe = Superheroe::find($superheroe);
-        $superheroe->update($request->all());
+        $superheroe->personaje = $request->personaje;
+        $superheroe->nombre = $request->nombre;
+        $superheroe->estado = $request->estado;
+        $superheroe->raza = $request->raza;
+        $superheroe->poder = $request->poder;
+        $superheroe->editorial = $request->editorial;
+        $superheroe->genero = $request->genero;
+        $superheroe->save();
     }
 
     /**

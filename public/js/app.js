@@ -21639,8 +21639,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     return {
       a: 1,
       personajes: [],
-      open: false,
       show: true,
+      btn: "Editar",
       btnText: "Ocultar",
       personaje: {
         id: '',
@@ -21651,7 +21651,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         poder: '',
         editorial: '',
         genero: ''
-      }
+      },
+      personajeE: {
+        id: '',
+        personaje: '',
+        nombre: '',
+        estado: '',
+        raza: '',
+        poder: '',
+        editorial: '',
+        genero: ''
+      },
+      e: ''
     };
   },
   methods: {
@@ -21668,7 +21679,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return axios.get('/personajes');
+                return axios.get('/api/personajes');
 
               case 2:
                 $res = _context.sent;
@@ -21692,7 +21703,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context2.prev = _context2.next) {
               case 0:
                 _context2.next = 2;
-                return axios["delete"]('/personajes/' + id);
+                return axios["delete"]('/api/personajes/' + id);
 
               case 2:
                 $res = _context2.sent;
@@ -21707,12 +21718,26 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee2);
       }))();
     },
-    actualizar: function actualizar(event) {
+    actualizar: function actualizar(id) {
+      var _this3 = this;
+
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
+        var $pos;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
+                _context3.next = 2;
+                return axios.put('/api/personajes/' + id, _this3.personajeE);
+
+              case 2:
+                $pos = _context3.sent;
+
+                _this3.listarPersonajes();
+
+                _this3.e = '';
+
+              case 5:
               case "end":
                 return _context3.stop();
             }
@@ -21720,8 +21745,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee3);
       }))();
     },
-    crear: function crear(event) {
-      var _this3 = this;
+    mostrarUno: function mostrarUno(id) {
+      var _this4 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
         var $res;
@@ -21730,18 +21755,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context4.prev = _context4.next) {
               case 0:
                 _context4.next = 2;
-                return axios.post('/personajes', _this3.personaje);
+                return axios.get('/api/personajes/' + id);
 
               case 2:
                 $res = _context4.sent;
+                _this4.personaje = $res.data;
+                _this4.personajeE = _this4.personaje;
 
-                _this3.resetDatos();
-
-                _this3.showToggle();
-
-                _this3.listarPersonajes();
-
-              case 6:
+              case 5:
               case "end":
                 return _context4.stop();
             }
@@ -21749,12 +21770,28 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee4);
       }))();
     },
-    mostrarInsertar: function mostrarInsertar() {
+    crear: function crear(event) {
+      var _this5 = this;
+
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee5() {
+        var $res;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee5$(_context5) {
           while (1) {
             switch (_context5.prev = _context5.next) {
               case 0:
+                _context5.next = 2;
+                return axios.post('/api/personajes', _this5.personaje);
+
+              case 2:
+                $res = _context5.sent;
+
+                _this5.resetDatos();
+
+                _this5.showToggle();
+
+                _this5.listarPersonajes();
+
+              case 6:
               case "end":
                 return _context5.stop();
             }
@@ -21774,6 +21811,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       } else {
         this.btnText = "Cancelar";
       }
+    },
+    editar: function editar(id) {
+      this.mostrarUno(id);
+      this.e = id;
+      this.edit = !this.edit;
+
+      if (this.edit) {
+        this.btn = "Editar";
+      } else {}
     }
   },
   created: function created() {
@@ -21785,6 +21831,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
     console.log(this.personajes);
     this.showToggle();
+    this.editar(null);
   }
 });
 
@@ -22719,16 +22766,16 @@ var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
 var _hoisted_5 = {
   scope: "col"
 };
+var _hoisted_6 = {
+  "class": "d-grid gap-2"
+};
 
-var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
   scope: "col"
 }, null, -1
 /* HOISTED */
 );
 
-var _hoisted_7 = {
-  scope: "col"
-};
 var _hoisted_8 = {
   scope: "col"
 };
@@ -22751,31 +22798,80 @@ var _hoisted_14 = {
   scope: "col"
 };
 var _hoisted_15 = {
+  scope: "col"
+};
+var _hoisted_16 = {
   "class": "d-grid gap-2 d-md-flex justify-content-md-end"
 };
-var _hoisted_16 = ["onClick"];
-var _hoisted_17 = {
-  scope: "col"
-};
-var _hoisted_18 = {
-  scope: "col"
-};
-var _hoisted_19 = {
-  scope: "col"
-};
+var _hoisted_17 = ["textContent", "onClick"];
+var _hoisted_18 = ["onClick"];
+var _hoisted_19 = ["onClick"];
 var _hoisted_20 = {
+  key: 0,
   scope: "col"
 };
 var _hoisted_21 = {
+  key: 1,
   scope: "col"
 };
 var _hoisted_22 = {
+  key: 2,
   scope: "col"
 };
 var _hoisted_23 = {
+  key: 3,
   scope: "col"
 };
 var _hoisted_24 = {
+  key: 4,
+  scope: "col"
+};
+var _hoisted_25 = {
+  key: 5,
+  scope: "col"
+};
+var _hoisted_26 = {
+  key: 6,
+  scope: "col"
+};
+var _hoisted_27 = {
+  key: 7,
+  scope: "col"
+};
+
+var _hoisted_28 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+  scope: "col"
+}, null, -1
+/* HOISTED */
+);
+
+var _hoisted_29 = {
+  key: 8,
+  scope: "col"
+};
+var _hoisted_30 = ["onUpdate:modelValue"];
+var _hoisted_31 = {
+  key: 9,
+  scope: "col"
+};
+var _hoisted_32 = {
+  key: 10,
+  scope: "col"
+};
+var _hoisted_33 = {
+  key: 11,
+  scope: "col"
+};
+var _hoisted_34 = {
+  key: 12,
+  scope: "col"
+};
+var _hoisted_35 = {
+  key: 13,
+  scope: "col"
+};
+var _hoisted_36 = {
+  key: 14,
   scope: "col"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
@@ -22786,89 +22882,87 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[0] || (_cache[0] = function () {
       return $options.showToggle && $options.showToggle.apply($options, arguments);
     }),
-    "class": "btn btn-success"
+    "class": "mb-2 btn btn-success"
   }, null, 8
   /* PROPS */
-  , _hoisted_2), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, " El bloque de contenido que se mostrará y ocultará ", 512
-  /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, _ctx.isShow]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_3, [_hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  , _hoisted_2), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_3, [_hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     onClick: _cache[1] || (_cache[1] = function ($event) {
       return _this.crear();
     }),
-    "class": "btn btn-success"
-  }, "Enviar")]), _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    "class": "btn btn-success btn-sm"
+  }, "Enviar")])]), _hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
       return $data.personaje.personaje = $event;
     }),
     type: "text",
     id: "ipersonaje",
-    "class": "form-control-sm",
-    size: "15",
+    "class": "form-control-sm form-control",
+    size: "7",
     placeholder: "personaje"
   }, null, 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.personaje.personaje]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.personaje.personaje]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
       return $data.personaje.nombre = $event;
     }),
     type: "text",
     id: "inombre",
-    "class": "form-control-sm",
-    size: "15",
+    "class": "form-control-sm form-control",
+    size: "7",
     placeholder: "nombre"
   }, null, 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.personaje.nombre]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.personaje.nombre]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
       return $data.personaje.estado = $event;
     }),
     type: "text",
     id: "iestado",
-    "class": "form-control-sm",
+    "class": "form-control-sm form-control",
     size: "7",
     placeholder: "estado"
   }, null, 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.personaje.estado]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.personaje.estado]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     "onUpdate:modelValue": _cache[5] || (_cache[5] = function ($event) {
       return $data.personaje.raza = $event;
     }),
     type: "text",
     id: "iraza",
-    "class": "form-control-sm",
+    "class": "form-control-sm form-control",
     size: "7",
     placeholder: "raza"
   }, null, 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.personaje.raza]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.personaje.raza]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     "onUpdate:modelValue": _cache[6] || (_cache[6] = function ($event) {
       return $data.personaje.poder = $event;
     }),
     type: "text",
     id: "ipoder",
-    "class": "form-control-sm",
-    size: "15",
+    "class": "form-control-sm form-control",
+    size: "7",
     placeholder: "poder"
   }, null, 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.personaje.poder]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.personaje.poder]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     "onUpdate:modelValue": _cache[7] || (_cache[7] = function ($event) {
       return $data.personaje.editorial = $event;
     }),
     type: "text",
     id: "ieditorial",
-    "class": "form-control-sm",
-    size: "15",
+    "class": "form-control-sm form-control",
+    size: "7",
     placeholder: "editorial"
   }, null, 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.personaje.editorial]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.personaje.editorial]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     "onUpdate:modelValue": _cache[8] || (_cache[8] = function ($event) {
       return $data.personaje.genero = $event;
     }),
     type: "text",
     id: "igenero",
-    "class": "form-control-sm",
+    "class": "form-control-sm form-control",
     size: "7",
     placeholder: "genero"
   }, null, 512
@@ -22878,35 +22972,124 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, !_ctx.isShow]]), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.personajes, function (personaje) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
       key: personaje.id
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-      onClick: _cache[9] || (_cache[9] = function () {
-        return _ctx.boton && _ctx.boton.apply(_ctx, arguments);
-      }),
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [$data.e != personaje.id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+      key: 0,
+      textContent: (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.btn),
+      onClick: function onClick($event) {
+        return $options.editar(personaje.id);
+      },
       "class": "btn btn-warning btn-sm"
-    }, "Editar"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    }, null, 8
+    /* PROPS */
+    , _hoisted_17)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.e == personaje.id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+      key: 1,
+      onClick: function onClick($event) {
+        return $options.actualizar(personaje.id);
+      },
+      "class": "btn btn-success btn-sm"
+    }, "Enviar", 8
+    /* PROPS */
+    , _hoisted_18)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
       onClick: function onClick($event) {
         return _this.eliminar(personaje.id);
       },
       "class": "btn btn-danger btn-sm"
     }, "Eliminar", 8
     /* PROPS */
-    , _hoisted_16)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(personaje.id), 1
+    , _hoisted_19)])]), $data.e != personaje.id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("td", _hoisted_20, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(personaje.id), 1
     /* TEXT */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_18, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(personaje.personaje), 1
+    )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.e != personaje.id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("td", _hoisted_21, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(personaje.personaje), 1
     /* TEXT */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_19, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(personaje.nombre), 1
+    )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.e != personaje.id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("td", _hoisted_22, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(personaje.nombre), 1
     /* TEXT */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_20, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(personaje.estado), 1
+    )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.e != personaje.id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("td", _hoisted_23, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(personaje.estado), 1
     /* TEXT */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_21, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(personaje.raza), 1
+    )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.e != personaje.id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("td", _hoisted_24, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(personaje.raza), 1
     /* TEXT */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_22, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(personaje.poder), 1
+    )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.e != personaje.id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("td", _hoisted_25, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(personaje.poder), 1
     /* TEXT */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_23, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(personaje.editorial), 1
+    )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.e != personaje.id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("td", _hoisted_26, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(personaje.editorial), 1
     /* TEXT */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_24, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(personaje.genero), 1
+    )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.e != personaje.id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("td", _hoisted_27, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(personaje.genero), 1
     /* TEXT */
-    )]);
+    )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_28, $data.e == personaje.id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("td", _hoisted_29, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+      "onUpdate:modelValue": function onUpdateModelValue($event) {
+        return $data.personajeE.personaje = $event;
+      },
+      type: "text",
+      id: "ipersonaje",
+      "class": "form-control-sm form-control",
+      size: "7",
+      placeholder: "personaje"
+    }, null, 8
+    /* PROPS */
+    , _hoisted_30), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.personajeE.personaje]])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.e == personaje.id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("td", _hoisted_31, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+      "onUpdate:modelValue": _cache[9] || (_cache[9] = function ($event) {
+        return $data.personajeE.nombre = $event;
+      }),
+      type: "text",
+      id: "inombre",
+      "class": "form-control-sm form-control",
+      size: "7",
+      placeholder: "nombre"
+    }, null, 512
+    /* NEED_PATCH */
+    ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.personajeE.nombre]])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.e == personaje.id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("td", _hoisted_32, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+      "onUpdate:modelValue": _cache[10] || (_cache[10] = function ($event) {
+        return $data.personajeE.estado = $event;
+      }),
+      type: "text",
+      id: "iestado",
+      "class": "form-control-sm form-control",
+      size: "7",
+      placeholder: "estado"
+    }, null, 512
+    /* NEED_PATCH */
+    ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.personajeE.estado]])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.e == personaje.id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("td", _hoisted_33, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+      "onUpdate:modelValue": _cache[11] || (_cache[11] = function ($event) {
+        return $data.personajeE.raza = $event;
+      }),
+      type: "text",
+      id: "iraza",
+      "class": "form-control-sm form-control",
+      size: "7",
+      placeholder: "raza"
+    }, null, 512
+    /* NEED_PATCH */
+    ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.personajeE.raza]])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.e == personaje.id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("td", _hoisted_34, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+      "onUpdate:modelValue": _cache[12] || (_cache[12] = function ($event) {
+        return $data.personajeE.poder = $event;
+      }),
+      type: "text",
+      id: "ipoder",
+      "class": "form-control-sm form-control",
+      size: "7",
+      placeholder: "poder"
+    }, null, 512
+    /* NEED_PATCH */
+    ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.personajeE.poder]])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.e == personaje.id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("td", _hoisted_35, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+      "onUpdate:modelValue": _cache[13] || (_cache[13] = function ($event) {
+        return $data.personajeE.editorial = $event;
+      }),
+      type: "text",
+      id: "ieditorial",
+      "class": "form-control-sm form-control",
+      size: "7",
+      placeholder: "editorial"
+    }, null, 512
+    /* NEED_PATCH */
+    ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.personajeE.editorial]])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.e == personaje.id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("td", _hoisted_36, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+      "onUpdate:modelValue": _cache[14] || (_cache[14] = function ($event) {
+        return $data.personajeE.genero = $event;
+      }),
+      type: "text",
+      id: "igenero",
+      "class": "form-control-sm form-control",
+      size: "7",
+      placeholder: "genero"
+    }, null, 512
+    /* NEED_PATCH */
+    ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.personajeE.genero]])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]);
   }), 128
   /* KEYED_FRAGMENT */
   ))])])], 64
